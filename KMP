@@ -1,0 +1,52 @@
+vector<int> getNext(string p) {
+	int m = p.size();
+	vector<int> next(m, -1);
+	int j = 0, k= -1;
+	while (j < m - 1) {
+		if (k == -1 || p[j] == p[k]) {
+			++j; ++k;
+			next[j] = (p[j] != p[k]) ? k : next[k];
+		} else {
+			k = next[k];
+		}
+	}
+	return next;
+}
+int kmp(string s, string p) {
+	int n = s.size(), m =p.size();
+	vector<int> next = getNext(p);
+	int i = 0, j = 0;
+	while (i < n && j < m) {
+		if (j == -1 || s[i] == p[j]) {
+			++i;
+			++j;
+		} else {
+			j = next[j];
+		}
+	}
+	if (j == m) 
+		return i - j;
+	else 
+		return -1 ;
+}
+vector<int> my_kmp(string s, string p) {
+	int n = s.size(), m= p.size();
+	vector<int> next = getNext(p);
+	int i =0, j= 0;
+	vector<int> res;
+	while ( i < n) {
+		while (j < m) {
+			// cout << " i : " << i <<"   j : " << j << endl;
+			if (j == - 1 || s[i] == p[j]) {
+				++i; ++j;
+			} else {
+				j = next[j];
+			}
+		}
+		if (j == m) 
+			res.push_back(i- j);
+		j = 0;
+		
+	}
+	return res;
+}
